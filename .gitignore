@@ -1,0 +1,8 @@
+# Ignore all files
+*
+
+# But allow files with an extension
+!*.*
+
+# Allow directories (so Git can traverse them)
+!*/
