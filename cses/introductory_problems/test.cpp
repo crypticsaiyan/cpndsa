@@ -1,6 +1,9 @@
-#include <iostream>
+#include <bits/stdc++.h>
+using namespace std;
 
 int main() {
-  int arr[2][4] = {{2, 3, 4, 5}, {2, 3, 3, 4}};
+  int k = 12;
+  int base = ceil((float)(k - 9) / 2);
+  cout << base;
   return 0;
 }
