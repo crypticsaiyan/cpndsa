@@ -30,35 +30,38 @@ int32_t main()
   cin >> t;
   while (t--)
   {
-    int n;
-    cin >> n;
-    vector<pair<int, int>> v;
+    int n, x, a, b, c;
+    cin >> n >> x;
+    int arr[n];
+    int max_free = 0;
+    int max_sum = 0;
+    int max_count = 0;
+    vector<int> max_1;
     fo(i, n)
     {
-      int x;
-      cin >> x;
-      v.push_back({x, i});
+      cin >> a >> b >> c;
+      max_free += a * (b - 1);
+      max_1.push_back(a * b - c);
+      max_sum += a * b - c;
     }
-    sort(v.begin(), v.end());
-    vi pre(n);
-    pre[0] = v[0].first;
-    for (int i = 1; i < n; i++)
+    sort(max_1.begin(), max_1.end());
+    reverse(max_1.begin(), max_1.end());
+    cout << "max free: " << max_free << endl;
+    int ans = 0;
+    if (x < max_free)
     {
-      pre[i] = pre[i - 1] + v[i].first;
+      cout << "0\n";
     }
-    int ans[n];
-    fo(i, n)
+    else if (max_free + max_sum < 0)
     {
-      int x = lower_bound(pre.begin(), pre.end(), v[i].first) - pre.begin();
-      cout << "x is " << x << endl;
-      ans[v[i].second] = n - 1 - x;
+      cout << "-1\n";
     }
-    for (auto x : v)
+    else
     {
-      cout << x.first << ":" << x.second << " ";
+      ans = (x) / (max_free + max_sum);
+      int rem = x%(max_free + max_sum);
+      cout << ans << endl;
     }
-    cout << endl;
-    pa(i, n, ans);
   }
   return 0;
 }
