@@ -1,4 +1,4 @@
-// problem-url: https://codeforces.com/problemset/problem/1904/B
+// problem-url: https://codeforces.com/problemset/problem/1899/C
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -25,31 +25,29 @@ int32_t main() {
   cin >> t;
   while (t--) {
     cin >> n;
-    vector<pair<int, int>> v(n);
-    for (int i = 0; i < n; i++) {
-      cin >> v[i].first;
-      v[i].second = i;
+    vector<int> v(n);
+    fo(i, n) cin >> v[i];
+    vector<int> sum(n);
+    sum[0] = v[0];
+    int temp = v[0];
+    for (int i = 0; i < n - 1; i++) {
+      if ((v[i] + v[i + 1]) % 2) {
+        // valid
+        if (temp > 0)
+          temp += v[i + 1];
+        else
+          temp = v[i + 1];
+        sum[i + 1] = temp;
+      } else {
+        // invalid
+        temp = v[i + 1];
+        sum[i + 1] = temp;
+      }
     }
-    sort(v.begin(), v.end());
-    vector<int> nos(n);
-    for (int i = 0; i < n; i++) {
-      nos[i] = v[i].first;
-    }
-    vector<long long> prefix(n);
-    prefix[0] = v[0].first;
-    for (int i = 1; i < n; i++)
-      prefix[i] = prefix[i - 1] + v[i].first;
-    vector<int> ans(n);
-    ans[v[n - 1].second] = n - 1;
-    for (int i = n - 2; i >= 0; i--) {
-      if (prefix[i] >= v[i + 1].first)
-        ans[v[i].second] = ans[v[i + 1].second];
-      else
-        ans[v[i].second] = i;
-    }
-    for (auto &x : ans)
-      cout << x << " ";
-    cout << endl;
+    int maxi = INT_MIN;
+    for (auto &x : sum)
+      maxi = max(maxi, x);
+    cout << maxi << endl;
   }
   return 0;
 }

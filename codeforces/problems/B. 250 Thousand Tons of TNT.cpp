@@ -1,4 +1,4 @@
-// problem-url: https://codeforces.com/problemset/problem/1904/B
+// problem-url: https://codeforces.com/problemset/problem/1899/B
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -25,31 +25,28 @@ int32_t main() {
   cin >> t;
   while (t--) {
     cin >> n;
-    vector<pair<int, int>> v(n);
-    for (int i = 0; i < n; i++) {
-      cin >> v[i].first;
-      v[i].second = i;
+    vi v(n);
+    fo(i, n) cin >> v[i];
+    vi prefix(n + 1);
+    prefix[0] = 0;
+    for (int i = 1; i <= n; i++)
+      prefix[i] = prefix[i - 1] + v[i - 1];
+    int ans = 0;
+    for (int i = 1; i < n; i++) {
+      if (n % i)
+        continue;
+      else {
+        int localmin = 1e18;
+        int localmax = -1e18;
+        for (int j = i; j <= n; j += i) {
+          int curr = prefix[j] - prefix[j - i];
+          localmin = min(localmin, curr);
+          localmax = max(localmax, curr);
+        }
+        ans = max(ans, localmax - localmin);
+      }
     }
-    sort(v.begin(), v.end());
-    vector<int> nos(n);
-    for (int i = 0; i < n; i++) {
-      nos[i] = v[i].first;
-    }
-    vector<long long> prefix(n);
-    prefix[0] = v[0].first;
-    for (int i = 1; i < n; i++)
-      prefix[i] = prefix[i - 1] + v[i].first;
-    vector<int> ans(n);
-    ans[v[n - 1].second] = n - 1;
-    for (int i = n - 2; i >= 0; i--) {
-      if (prefix[i] >= v[i + 1].first)
-        ans[v[i].second] = ans[v[i + 1].second];
-      else
-        ans[v[i].second] = i;
-    }
-    for (auto &x : ans)
-      cout << x << " ";
-    cout << endl;
+    cout << ans << endl;
   }
   return 0;
 }
